@@ -17,7 +17,7 @@ public class TimeSeriesGenerator {
     private static final DateTimeFormatter dateFormatter = ofPattern(ISO_8601_DATE);
 
     public static void main(String... args) {
-        if (args.length != 4) {
+        if (args.length != 5) {
             printHelp();
             return;
         }
@@ -25,19 +25,21 @@ public class TimeSeriesGenerator {
         ZonedDateTime sinceClosed = LocalDate.parse(args[0], dateFormatter).atStartOfDay(ZoneId.systemDefault());
         ZonedDateTime untilOpen = LocalDate.parse(args[1], dateFormatter).atStartOfDay(ZoneId.systemDefault());
         BigDecimal totalSum = new BigDecimal(args[2]);
-        List<BigDecimal> singleDayLimits = of(args[3].split(";")).map(BigDecimal::new).collect(toList());
+        List<BigDecimal> wholePeriodLimits = of(args[3].split(";")).map(BigDecimal::new).collect(toList());
+        List<BigDecimal> singleDayLimits = of(args[4].split(";")).map(BigDecimal::new).collect(toList());
 
         aValueEveryQuarter()
                 .withSinceClosed(sinceClosed)
                 .withUntilOpen(untilOpen)
                 .withTotalSum(totalSum)
-                .withLimits(singleDayLimits)
+                .withWholePeriodLimits(wholePeriodLimits)
+                .withSingleDayLimits(singleDayLimits)
                 .build()
                 .generate()
                 .print();
     }
 
     private static void printHelp() {
-        System.out.print("<yyyy-MM-dd since closed> <yyyy-MM-dd until open> <total sum> <semicolon separated limits for a single day>");
+        System.out.print("<yyyy-MM-dd since closed> <yyyy-MM-dd until open> <total sum> <semicolon separated limits for the whole period> <semicolon separated limits for a single day>");
     }
 }

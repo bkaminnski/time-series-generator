@@ -8,7 +8,8 @@ class AValueEveryQuarterBuilder {
     private ZonedDateTime sinceClosed;
     private ZonedDateTime untilOpen;
     private BigDecimal totalSum;
-    private List<BigDecimal> limits;
+    private List<BigDecimal> wholePeriodLimits;
+    private List<BigDecimal> singleDayLimits;
 
     static AValueEveryQuarterBuilder aValueEveryQuarter() {
         return new AValueEveryQuarterBuilder();
@@ -29,12 +30,17 @@ class AValueEveryQuarterBuilder {
         return this;
     }
 
-    AValueEveryQuarterBuilder withLimits(List<BigDecimal> limits) {
-        this.limits = limits;
+    AValueEveryQuarterBuilder withWholePeriodLimits(List<BigDecimal> wholePeriodLimits) {
+        this.wholePeriodLimits = wholePeriodLimits;
+        return this;
+    }
+
+    AValueEveryQuarterBuilder withSingleDayLimits(List<BigDecimal> singleDayLimits) {
+        this.singleDayLimits = singleDayLimits;
         return this;
     }
 
     AValueEveryQuarter build() {
-        return new AValueEveryQuarter(sinceClosed, untilOpen, totalSum, limits);
+        return new AValueEveryQuarter(sinceClosed, untilOpen, totalSum, wholePeriodLimits, singleDayLimits);
     }
 }
